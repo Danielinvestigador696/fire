@@ -1,5 +1,16 @@
 # 🚀 Deploy no Render - Guia Completo
 
+## ⚠️ ATENÇÃO - Configuração Crítica do DB_HOST
+
+**IMPORTANTE**: O `DB_HOST` correto para conexão MySQL remota na Hostinger é:
+
+- ✅ **Use**: `srv1660.hstgr.io` (hostname recomendado)
+- ❌ **NÃO use**: `82.112.247.202` (IP antigo que pode não funcionar)
+
+**Se você está tendo erro de conexão**, atualize o `DB_HOST` no Render para `srv1660.hstgr.io`.
+
+---
+
 ## 📋 Problema Comum
 
 Se você está vendo este erro:
@@ -47,7 +58,7 @@ Se você preferir usar Secret Files (como na imagem que você mostrou):
 ```env
 PORT=10000
 NODE_ENV=production
-DB_HOST=82.112.247.202
+DB_HOST=srv1660.hstgr.io
 DB_USER=u984823938_fireuser
 DB_PASSWORD=fireuser00!
 DB_NAME=u984823938_fire
@@ -56,13 +67,18 @@ JWT_REFRESH_SECRET=DVKGXL6MReJCaxnde8fQHFtBGgm6torMTQorY7jFMuY=
 FRONTEND_URL=https://fire.dgapp.com.br
 ```
 
+⚠️ **IMPORTANTE - DB_HOST**: 
+- ✅ **Use**: `srv1660.hstgr.io` (hostname recomendado pela Hostinger)
+- ❌ **NÃO use**: `82.112.247.202` (IP antigo que pode não funcionar para acesso remoto)
+- 🔄 **Alternativa**: `193.203.175.141` (IP alternativo se o hostname não funcionar)
+
 ### Passo 3: Verificar Cada Variável
 
 Certifique-se de que **TODAS** as variáveis estão configuradas:
 
 - ✅ `PORT` = `10000` (ou a porta que o Render atribuir)
 - ✅ `NODE_ENV` = `production`
-- ✅ `DB_HOST` = `82.112.247.202`
+- ✅ `DB_HOST` = `srv1660.hstgr.io` (ou `193.203.175.141` como alternativa)
 - ✅ `DB_USER` = `u984823938_fireuser`
 - ✅ `DB_PASSWORD` = `fireuser00!`
 - ✅ `DB_NAME` = `u984823938_fire`
@@ -164,14 +180,21 @@ O Render detecta automaticamente, mas você pode especificar no `package.json`:
 
 **Solução**: Verifique se `DB_NAME` está configurado corretamente.
 
-### Erro: "ECONNREFUSED"
+### Erro: "ECONNREFUSED" ou "Access denied for user '...'@'74.220.48.240'"
 
 **Causa**: `DB_HOST` está incorreto ou o banco não aceita conexões externas.
 
 **Solução**: 
-1. Verifique se o IP `82.112.247.202` está correto
-2. Verifique se o banco MySQL na Hostinger permite conexões externas
-3. Pode ser necessário adicionar o IP do Render (`74.220.48.240`) na whitelist do MySQL
+1. ⚠️ **IMPORTANTE**: Use o hostname correto `srv1660.hstgr.io` ao invés do IP `82.112.247.202`
+2. Verifique se o banco MySQL na Hostinger permite conexões externas:
+   - Acesse o hPanel: https://hpanel.hostinger.com
+   - Vá em **Bancos de Dados** → **MySQL Remoto**
+   - Certifique-se de que o IP do Render (`74.220.48.240`) está na lista de hosts permitidos
+3. Se o hostname não funcionar, tente o IP alternativo: `193.203.175.141`
+4. Se o erro persistir, tente **reparar o banco de dados** no hPanel:
+   - Vá em **Bancos de Dados** → **Gerenciamento**
+   - Clique no menu de ações (três pontos) do banco
+   - Selecione **"Reparar"** para recriar as permissões
 
 ### Erro: "Could not find a declaration file for module 'express'"
 
