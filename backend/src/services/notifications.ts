@@ -1,15 +1,8 @@
 import { database } from '../database/connection';
 import nodemailer from 'nodemailer';
-import * as Notifications from 'expo-notifications';
+import { Expo } from 'expo-server-sdk';
 
-// Configurar Expo Notifications
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: true,
-  }),
-});
+const expo = new Expo();
 
 // Configurar email transporter
 const transporter = nodemailer.createTransport({
@@ -31,23 +24,38 @@ export const notificationService = {
         [userId]
       ) as any[];
 
-      if (tokens.length === 0) {
+      if (!tokens || tokens.length === 0) {
         return;
       }
 
-      // Enviar para cada token
+      const messages = [];
+
+      // Preparar mensagens
       for (const tokenData of tokens) {
+        if (!Expo.isExpoPushToken(tokenData.token)) {
+          console.error(`Push token ${tokenData.token} is not a valid Expo push token`);
+          continue;
+        }
+
+        messages.push({
+          to: tokenData.token,
+          sound: 'default',
+          title,
+          body,
+          data,
+        });
+      }
+
+      // Enviar em lotes
+      const chunks = expo.chunkPushNotifications(messages as any);
+      const tickets = [];
+
+      for (const chunk of chunks) {
         try {
-          await Notifications.scheduleNotificationAsync({
-            content: {
-              title,
-              body,
-              data,
-            },
-            trigger: null, // Enviar imediatamente
-          });
+          const ticketChunk = await expo.sendPushNotificationsAsync(chunk);
+          tickets.push(...ticketChunk);
         } catch (error) {
-          console.error('Erro ao enviar push notification:', error);
+          console.error('Erro ao enviar chunk de notificações:', error);
         }
       }
 
