@@ -3,6 +3,8 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
 import { database } from './database/connection';
 import { authRoutes } from './modules/auth/routes';
 import { usersRoutes } from './modules/users/routes';
@@ -16,7 +18,29 @@ import { adminRoutes } from './modules/admin/routes';
 import { errorHandler } from './middleware/errorHandler';
 import { checkSubscription } from './middleware/checkSubscription';
 
-dotenv.config();
+// Carregar variáveis de ambiente
+// Prioridade: Secret Files do Render > .env local > variáveis de ambiente do sistema
+const possibleSecretPaths = [
+  '/etc/secrets/.env',           // Caminho padrão do Render
+  process.env.RENDER_SECRET_FILE, // Caminho customizado via env var
+  path.join(process.cwd(), '.env'), // .env local
+];
+
+let envLoaded = false;
+for (const secretPath of possibleSecretPaths) {
+  if (secretPath && fs.existsSync(secretPath)) {
+    dotenv.config({ path: secretPath });
+    console.log(`✅ Carregado arquivo de ambiente: ${secretPath}`);
+    envLoaded = true;
+    break;
+  }
+}
+
+if (!envLoaded) {
+  // Tentar carregar .env padrão ou usar variáveis de ambiente do sistema
+  dotenv.config();
+  console.log('✅ Usando variáveis de ambiente do sistema ou .env padrão');
+}
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;

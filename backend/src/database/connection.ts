@@ -1,7 +1,4 @@
 import mysql from 'mysql2/promise';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 console.log('Tentando conectar ao banco de dados...');
 console.log('DB_HOST definido:', !!process.env.DB_HOST, process.env.DB_HOST);
