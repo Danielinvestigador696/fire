@@ -3,11 +3,16 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
+console.log('Tentando conectar ao banco de dados...');
+console.log('DB_HOST definido:', !!process.env.DB_HOST, process.env.DB_HOST);
+console.log('DB_USER definido:', !!process.env.DB_USER, process.env.DB_USER);
+console.log('DB_NAME definido:', !!process.env.DB_NAME, process.env.DB_NAME);
+
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'anotfire',
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
   waitForConnections: true,
   connectionLimit: 10,
   queueLimit: 0,
