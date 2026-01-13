@@ -1,0 +1,127 @@
+===========================================
+COMANDOS SSH PARA DIAGNÓSTICO - HOSTINGER
+===========================================
+
+1. CONECTAR VIA SSH
+-------------------
+ssh u984823938@ssh.hostinger.com -p 65002
+
+2. NAVEGAR PARA PASTA DO BACKEND
+---------------------------------
+cd ~/domains/fire.dgapp.com.br/public_html/api
+# ou
+cd ~/public_html/api
+
+3. VERIFICAR ESTRUTURA
+----------------------
+ls -la                    # Listar todos os arquivos
+ls -la package.json       # Verificar package.json
+ls -la .env               # Verificar .env
+ls -la node_modules       # Verificar dependências
+ls -la dist/              # Verificar pasta dist
+ls -la server.js          # Verificar server.js na raiz
+
+4. MOVER .env PARA LOCAL CORRETO
+---------------------------------
+# Se .env está em public_html/ (raiz)
+cp ../.env .env
+# ou
+mv ../.env .env
+
+# Verificar se foi movido
+ls -la .env
+
+5. VERIFICAR CONTEÚDO DO .env
+------------------------------
+cat .env | grep DB_       # Ver variáveis do banco
+cat .env | grep JWT_       # Ver variáveis JWT
+cat .env                  # Ver todo o conteúdo
+
+6. INSTALAR DEPENDÊNCIAS
+------------------------
+npm install --production
+
+7. VERIFICAR NODE.JS E PM2
+--------------------------
+node --version
+npm --version
+pm2 --version
+
+8. INSTALAR PM2 (se necessário)
+---------------------------------
+npm install -g pm2
+
+9. VERIFICAR SE SERVIDOR ESTÁ RODANDO
+--------------------------------------
+pm2 status
+
+10. INICIAR SERVIDOR
+--------------------
+# Se arquivos estão em dist/
+pm2 start dist/server.js --name anotfire-api
+
+# Se arquivos estão na raiz
+pm2 start server.js --name anotfire-api
+
+# Salvar configuração
+pm2 save
+
+# Configurar startup automático
+pm2 startup
+
+11. VER LOGS
+------------
+pm2 logs anotfire-api              # Logs em tempo real
+pm2 logs anotfire-api --lines 50   # Últimas 50 linhas
+pm2 logs anotfire-api --err        # Apenas erros
+
+12. REINICIAR SERVIDOR
+----------------------
+pm2 restart anotfire-api
+
+13. PARAR SERVIDOR
+------------------
+pm2 stop anotfire-api
+
+14. DELETAR PROCESSO
+--------------------
+pm2 delete anotfire-api
+
+15. TESTAR CONEXÃO MYSQL
+------------------------
+mysql -h localhost -u u984823938_fireuser -p u984823938_fire
+# Digite a senha quando solicitado: fireuser00!
+
+16. TESTAR API LOCALMENTE
+-------------------------
+curl http://localhost:3000/health
+
+17. VERIFICAR PORTA 3000
+------------------------
+netstat -tuln | grep 3000
+# ou
+lsof -i :3000
+
+18. EXECUTAR SCRIPTS DE VERIFICAÇÃO
+-----------------------------------
+# Se você fez upload dos scripts
+bash scripts/verificar-backend.sh
+bash scripts/setup-hostinger.sh
+
+===========================================
+TROUBLESHOOTING RÁPIDO
+===========================================
+
+Erro: "Cannot find module"
+→ npm install --production
+
+Erro: "ECONNREFUSED" MySQL
+→ Verificar se .env está em api/ e credenciais corretas
+
+Erro: "Port 3000 already in use"
+→ pm2 stop all
+
+Servidor não responde
+→ Verificar firewall e se server.ts usa 0.0.0.0
+
+===========================================

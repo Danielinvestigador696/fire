@@ -1,0 +1,64 @@
+===========================================
+COMANDOS SSH RÁPIDOS - HOSTINGER
+===========================================
+
+1. CONECTAR VIA SSH
+-------------------
+ssh u984823938@ssh.hostinger.com -p 65002
+
+2. NAVEGAR PARA PASTA DO BACKEND
+---------------------------------
+cd ~/domains/fire.dgapp.com.br/public_html/api/backend
+# ou
+cd ~/public_html/api/backend
+
+3. INSTALAR DEPENDÊNCIAS
+-------------------------
+npm install --production
+npm run build
+
+4. CRIAR ARQUIVO .env
+---------------------
+nano .env
+# (Cole o conteúdo do .env.example e ajuste)
+
+5. INSTALAR PM2
+--------------
+npm install -g pm2
+
+6. INICIAR SERVIDOR
+-------------------
+pm2 start dist/server.js --name anotfire-api
+pm2 save
+pm2 startup
+
+7. VER LOGS
+-----------
+pm2 logs anotfire-api
+
+8. VER STATUS
+-------------
+pm2 status
+
+9. REINICIAR
+------------
+pm2 restart anotfire-api
+
+10. PARAR
+---------
+pm2 stop anotfire-api
+
+===========================================
+UPLOAD DE ARQUIVOS (do Windows para Hostinger)
+===========================================
+
+Via SCP (PowerShell):
+scp -P 65002 -r backend u984823938@ssh.hostinger.com:~/domains/fire.dgapp.com.br/public_html/api
+
+Via FileZilla/WinSCP:
+- Host: sftp://ssh.hostinger.com
+- Porta: 65002
+- Usuário: u984823938
+- Protocolo: SFTP
+
+===========================================

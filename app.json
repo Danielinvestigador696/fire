@@ -1,0 +1,77 @@
+{
+  "expo": {
+    "name": "AnotFire CAC",
+    "slug": "anotfire",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.anotfire.cac",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Este app precisa acessar a câmera para fotografar armas e registros de caça.",
+        "NSPhotoLibraryUsageDescription": "Este app precisa acessar suas fotos para anexar imagens.",
+        "NSLocationWhenInUseUsageDescription": "Este app precisa acessar sua localização para registrar locais de caça."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "com.anotfire.cac",
+      "permissions": [
+        "CAMERA",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Permitir acesso à câmera para fotografar armas e registros de caça."
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Permitir acesso à localização para registrar locais de caça."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#ffffff",
+          "sounds": ["./assets/notification-sound.wav"]
+        }
+      ]
+    ],
+    "scheme": "anotfire",
+    "extra": {
+      "eas": {
+        "projectId": "your-project-id"
+      }
+    },
+    "experiments": {
+      "typedRoutes": false
+    }
+  }
+}

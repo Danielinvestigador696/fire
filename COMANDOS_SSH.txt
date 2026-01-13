@@ -1,0 +1,57 @@
+# Comandos para copiar e colar no SSH da Hostinger
+
+# ============================================
+# CONECTAR VIA SSH
+# ============================================
+# No terminal do Windows (PowerShell/CMD):
+ssh -p 65002 u984823938@82.112.247.202
+
+# ============================================
+# APÓS CONECTAR - NAVEGAR E INICIAR SERVIDOR
+# ============================================
+
+# 1. Ir para pasta do backend
+cd public_html/api
+
+# 2. Verificar arquivos
+ls -la
+
+# 3. Instalar dependências (primeira vez)
+npm install --production
+
+# 4. Instalar PM2 (primeira vez)
+npm install -g pm2
+
+# 5. Iniciar servidor
+pm2 start dist/server.js --name anotfire-api
+
+# 6. Salvar configuração PM2
+pm2 save
+
+# 7. Configurar para iniciar automaticamente
+pm2 startup
+
+# 8. Ver status
+pm2 status
+
+# 9. Ver logs (para verificar se está funcionando)
+pm2 logs anotfire-api
+
+# ============================================
+# COMANDOS ÚTEIS PM2
+# ============================================
+
+# Reiniciar servidor
+pm2 restart anotfire-api
+
+# Parar servidor
+pm2 stop anotfire-api
+
+# Ver logs em tempo real
+pm2 logs anotfire-api --lines 50
+
+# Ver monitoramento
+pm2 monit
+
+# Deletar processo
+pm2 delete anotfire-api
