@@ -1,6 +1,5 @@
 PORT=3000
 NODE_ENV=production
-DB_HOST=localhost
 DB_USER=u984823938_fireuser
 DB_PASSWORD=fireuser00!
 DB_NAME=u984823938_fire
