@@ -1,0 +1,31 @@
+# Comandos para executar na Hostinger via SSH
+
+# 1. Navegar até a pasta
+cd public_html/api
+
+# 2. Instalar dependências (primeira vez)
+npm install --production
+
+# 3. Instalar PM2 (primeira vez)
+npm install -g pm2
+
+# 4. Iniciar servidor
+pm2 start dist/server.js --name anotfire-api
+
+# 5. Salvar configuração PM2
+pm2 save
+
+# 6. Configurar para iniciar automaticamente
+pm2 startup
+
+# 7. Ver status
+pm2 status
+
+# 8. Ver logs
+pm2 logs anotfire-api
+
+# 9. Reiniciar (se necessário)
+pm2 restart anotfire-api
+
+# 10. Parar servidor
+pm2 stop anotfire-api
